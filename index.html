@@ -3,115 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For MY FATHI❤️</title>
+    <title>For My FATHI ❤️</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        body { margin: 0; background: #ffe5ec; font-family: 'Pacifico', cursive; overflow: hidden; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-        .wrapper { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 500px; text-align: center; }
-        .bear-box { height: 140px; margin-bottom: 10px; }
-        .bear-box img { width: 140px; }
-        .stage { width: 500px; height: 180px; position: relative; pointer-events: none; }
-        .mo-container { position: absolute; width: 100%; height: 100%; z-index: 1; }
-        .svg-container { position: absolute; width: 100%; height: 100%; z-index: 2; }
-        .line { fill: none; stroke: #763c8c; stroke-width: 8; stroke-linecap: round; }
-        .lttr { fill: #763c8c; opacity: 0; }
-        .question { color: #763c8c; font-size: 1.8rem; margin: 20px 0; }
-        .btn-row { display: flex; gap: 30px; justify-content: center; align-items: center; min-height: 100px; width: 100%; position: relative; }
-        button { padding: 12px 35px; font-size: 1.2rem; border-radius: 50px; border: none; cursor: pointer; font-family: 'Pacifico', cursive; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        #yesBtn { background: #763c8c; color: white; z-index: 1000; }
-        #noBtn { background: white; color: #763c8c; position: absolute; left: 55%; z-index: 1001; }
+        body { 
+            margin: 0; background: #ffe5ec; font-family: 'Pacifico', cursive; 
+            display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden;
+        }
+        .container { text-align: center; width: 90%; max-width: 400px; padding: 20px; background: white; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+
+        /* Fail-safe Bear (Emoji) */
+        .bear-emoji { font-size: 80px; margin-bottom: 10px; display: block; }
+
+        /* Photo Frame */
+        .photo-frame {
+            width: 130px; height: 130px; margin: 0 auto 20px;
+            border: 5px solid #ff4d6d; border-radius: 50%; overflow: hidden;
+            background: #ffd1dc; display: flex; align-items: center; justify-content: center;
+        }
+        .photo-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .photo-placeholder { font-size: 40px; }
+
+        /* Beating Animation */
+        .love-box { display: flex; align-items: center; justify-content: center; gap: 15px; margin: 20px 0; }
+        .heart { font-size: 35px; color: #ff4d6d; animation: beat 0.6s infinite alternate; }
+        .text { font-size: 2.2rem; color: #c9184a; margin: 0; }
+
+        @keyframes beat { to { transform: scale(1.3); } }
+
+        .question { color: #c9184a; font-size: 1.5rem; margin-bottom: 25px; }
+        .btn-group { position: relative; height: 120px; width: 100%; }
+        
+        button { 
+            padding: 15px 35px; font-size: 1.2rem; border-radius: 50px; border: none; 
+            cursor: pointer; font-family: 'Pacifico', cursive; transition: transform 0.1s;
+        }
+        #yesBtn { background: #ff4d6d; color: white; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4); }
+        #noBtn { background: #f0f0f0; color: #ff4d6d; position: absolute; left: 50%; transform: translateX(-50%); }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="bear-box">
-        <img src="https://media.tenor.com/7S8l0N9M7mUAAAAi/milk-and-mocha-bear-couple.gif" id="mainBear">
+<div class="container">
+    <div class="photo-frame">
+        <img src="your-photo.jpg" onerror="this.style.display='none'; document.getElementById('placeholder').style.display='block';">
+        <div id="placeholder" class="photo-placeholder" style="display:none;">📸</div>
     </div>
 
-    <div class="stage">
-        <svg class="svg-container" viewBox="0 0 500 200">
-            <line class="line line--left" x1="10" y1="17" x2="10" y2="183"></line>
-            <line class="line line--rght" x1="490" y1="17" x2="490" y2="183"></line>
-            <g>
-                <path class="lttr lttr--I" d="M42.2,73.9h11.4v52.1H42.2V73.9z"></path>
-                <path class="lttr lttr--L" d="M85.1,73.9h11.4v42.1h22.8v10H85.1V73.9z"></path>
-                <path class="lttr lttr--O" d="M123.9,100c0-15.2,11.7-26.9,27.2-26.9s27.2,11.7,27.2,26.9s-11.7,26.9-27.2,26.9S123.9,115.2,123.9,100zM166.9,100c0-9.2-6.8-16.5-15.8-16.5c-9,0-15.8,7.3-15.8,16.5s6.8,16.5,15.8,16.5C160.1,116.5,166.9,109.2,166.9,100z"></path>
-                <path class="lttr lttr--V" d="M180.7,73.9H193l8.4,22.9c1.7,4.7,3.5,9.5,5,14.2h0.1c1.7-4.8,3.4-9.4,5.2-14.3l8.6-22.8h11.7l-19.9,52.1h-11.5L180.7,73.9z"></path>
-                <path class="lttr lttr--E" d="M239.1,73.9h32.2v10h-20.7v10.2h17.9v9.5h-17.9v12.4H272v10h-33V73.9z"></path>
-                <path class="lttr lttr--Y" d="M315.8,102.5l-20.1-28.6H309l6.3,9.4c2,3,4.2,6.4,6.3,9.6h0.1c2-3.2,4.1-6.4,6.3-9.6l6.3-9.4h12.9l-19.9,28.5v23.6h-11.4V102.5z"></path>
-                <path class="lttr lttr--O2" d="M348.8,100c0-15.2,11.7-26.9,27.2-26.9c15.5,0,27.2,11.7,27.2,26.9s-11.7,26.9-27.2,26.9C360.5,126.9,348.8,115.2,348.8,100z M391.8,100c0-9.2-6.8-16.5-15.8-16.5c-9,0-15.8,7.3-15.8,16.5s6.8,16.5,15.8,16.5C385,116.5,391.8,109.2,391.8,100z"></path>
-                <path class="lttr lttr--U" d="M412.4,101.1V73.9h11.4v26.7c0,10.9,2.4,15.9,11.5,15.9c8.4,0,11.4-4.6,11.4-15.8V73.9h11v26.9c0,7.8-1.1,13.5-4,17.7c-3.7,5.3-10.4,8.4-18.7,8.4c-8.4,0-15.1-3.1-18.8-8.5C413.4,114.2,412.4,108.5,412.4,101.1z"></path>
-            </g>
-        </svg>
-        <div class="mo-container"></div>
+    <span class="bear-emoji" id="bearCharacter">🧸</span>
+
+    <div class="love-box">
+        <div class="heart">❤️</div>
+        <h1 class="text">I LOVE YOU</h1>
+        <div class="heart">❤️</div>
     </div>
 
-    <h1 class="question">Will you be my Valentine?</h1>
-    <div class="btn-row">
+    <h2 class="question" id="qText">Will you be my Valentine?</h2>
+
+    <div class="btn-group">
         <button id="yesBtn">Yes! ❤️</button>
         <button id="noBtn">No</button>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 <script>
-    const qs = document.querySelector.bind(document);
-    const el = {
-        container: qs(".mo-container"),
-        i: qs(".lttr--I"), l: qs(".lttr--L"), o: qs(".lttr--O"), v: qs(".lttr--V"), e: qs(".lttr--E"),
-        y: qs(".lttr--Y"), o2: qs(".lttr--O2"), u: qs(".lttr--U"),
-        lineLeft: qs(".line--left"), lineRight: qs(".line--rght"),
-        colTxt: "#763c8c", colHeart: "#fa4843"
-    };
-
-    class Heart extends mojs.CustomShape {
-        getShape() { return '<path d="M50,88.9C25.5,78.2,0.5,54.4,3.8,31.1S41.3,1.8,50,29.9c8.7-28.2,42.8-22.2,46.2,1.2S74.5,78.2,50,88.9z"/>'; }
-        getLength() { return 200; }
-    }
-    mojs.addShape("heart", Heart);
-
-    const crtBoom = (delay = 0, x = 0) => {
-        return [new mojs.Burst({
-            parent: el.container, radius: { 40: 110 }, angle: "rand(60, 180)", count: 3, delay, x,
-            children: { radius: [5, 3, 7], fill: el.colTxt, scale: { 1: 0 }, duration: 400 }
-        })];
-    };
-
-    const runAnim = () => {
-        const move = 1000; const boom = 200; const easing = "sin.inOut";
-        const timeline = new mojs.Timeline().add([
-            new mojs.Tween({ duration: move, onUpdate: (p) => { [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(letter => letter.style.opacity = p); } }),
-            new mojs.Html({ el: el.lineLeft, x: { 0: 52 }, duration: move, easing }).then({ x: 106, duration: move + boom }).then({ x: 166, duration: move + boom }).then({ x: 0, duration: 400 }),
-            new mojs.Html({ el: el.lineRight, x: { 0: -52 }, duration: move, easing }).then({ x: -106, duration: move + boom }).then({ x: -166, duration: move + boom }).then({ x: 0, duration: 400 }),
-            new mojs.Shape({ parent: el.container, shape: "heart", delay: move, fill: el.colHeart, x: -64, scale: { 0: 0.95 }, duration: 500 }).then({ x: -14, scale: 0.9, duration: 1200 }).then({ scale: 0, duration: 500 }),
-            ...crtBoom(move, -64), ...crtBoom(move * 2, 20)
-        ]);
-        timeline.play();
-        setTimeout(runAnim, 5000);
-    };
-    runAnim();
-
-    const noBtn = qs('#noBtn');
-    const yesBtn = qs('#yesBtn');
-    const bear = qs('#mainBear');
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const bear = document.getElementById('bearCharacter');
+    const qText = document.getElementById('qText');
     let scale = 1;
 
-    noBtn.addEventListener('mouseover', () => {
+    noBtn.addEventListener('mouseover', moveNo);
+    noBtn.addEventListener('touchstart', moveNo);
+
+    function moveNo() {
+        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
         noBtn.style.position = 'fixed';
-        noBtn.style.left = Math.random() * 80 + '%';
-        noBtn.style.top = Math.random() * 80 + '%';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
         scale += 0.2;
         yesBtn.style.transform = `scale(${scale})`;
-        bear.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
-    });
+        bear.innerHTML = "🥺"; // Bear gets sad when you hover 'No'
+    }
 
     yesBtn.addEventListener('click', () => {
-        qs('.question').innerHTML = "I Love You Forever! ❤️ n I Miss You So Much";
-        qs('.btn-row').style.display = 'none';
-        bear.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif";
-        confetti({ particleCount: 150, spread: 70 });
+        qText.innerHTML = "I Knew You'd Say Yes! ❤️";
+        document.querySelector('.btn-group').style.display = 'none';
+        bear.innerHTML = "🥰"; // Bear gets happy!
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     });
 </script>
 </body>
