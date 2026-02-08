@@ -20,6 +20,8 @@ body {
 
 /* This creates the circular frame for your photo */
 .photo-frame {
+    display: none; /* This hides it initially */
+    /* ... keep your other existing styles ... */
     width: 180px; 
     height: 180px; 
     margin: 0 auto 20px;
