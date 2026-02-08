@@ -5,13 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>For My Girl ❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./style.css">
+  <style>
+    *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { 
+      min-height: 100vh; display: flex; justify-content: center; align-items: center; 
+      background-color: #ffe5ec; font-family: 'Pacifico', cursive; overflow: hidden; 
+    }
+    .main-card { display: flex; flex-direction: column; align-items: center; z-index: 10; text-align: center; width: 100%; }
+    
+    /* Bear Styling */
+    .bear-container img { width: 160px; height: auto; margin-bottom: 10px; }
+
+    /* The "I LOVE YOU" Animation Container */
+    .container { width: 500px; height: 180px; position: relative; margin-top: -20px; }
+    .svg-container { z-index: 2; position: absolute; top: 0; left: 0; }
+    .mo-container { width: 100%; height: 100%; }
+    .line { fill: none; stroke: #ff4d6d; stroke-width: 8; stroke-linecap: round; }
+    .lttr { fill: #ff4d6d; }
+
+    /* Interaction Area */
+    .question { color: #fb6f92; font-size: 1.8rem; margin-top: 10px; }
+    .btn-group { 
+      display: flex; justify-content: center; align-items: center; 
+      gap: 30px; min-height: 150px; width: 100%; position: relative; 
+    }
+    
+    button { 
+      padding: 12px 25px; font-size: 1.2rem; font-family: 'Pacifico', cursive; 
+      border: none; border-radius: 50px; cursor: pointer; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    }
+    #yesBtn { background-color: #ff4d6d; color: white; z-index: 100; transition: 0.2s; }
+    #noBtn { 
+      background-color: #ffffff; color: #ff4d6d; 
+      position: relative; z-index: 100;
+    }
+  </style>
 </head>
 <body>
 
   <div class="main-card">
     <div class="bear-container">
-      <img src="https://media.tenor.com/7S8l0N9M7mUAAAAi/milk-and-mocha-bear-couple.gif" alt="Cute Bear" id="bearImg">
+      <img src="https://media.tenor.com/7S8l0N9M7mUAAAAi/milk-and-mocha-bear-couple.gif" id="bearImg">
     </div>
 
     <div class="container">
@@ -29,20 +64,84 @@
           <path class="lttr lttr--U" d="M412.4,101.1V73.9h11.4v26.7c0,10.9,2.4,15.9,11.5,15.9c8.4,0,11.4-4.6,11.4-15.8V73.9h11v26.9c0,7.8-1.1,13.5-4,17.7c-3.7,5.3-10.4,8.4-18.7,8.4c-8.4,0-15.1-3.1-18.8-8.5C413.4,114.2,412.4,108.5,412.4,101.1z"></path>
         </g>
       </svg>
-      <div class="mo-container"> </div>
+      <div class="mo-container"></div>
     </div>
 
-    <div class="interaction-layer">
-      <h1 class="question">Will you be my Valentine?</h1>
-      <div class="btn-group">
-        <button id="yesBtn">Yes! ❤️</button>
-        <button id="noBtn">No</button>
-      </div>
+    <h1 class="question">Will you be my Valentine?</h1>
+    
+    <div class="btn-group">
+      <button id="yesBtn">Yes! ❤️</button>
+      <button id="noBtn">No</button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src='https://cdn.jsdelivr.net/mojs/latest/mo.min.js'></script>
-  <script src="./script.js"></script>
+  <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
+
+  <script>
+    // --- PART 1: THE "I LOVE YOU" ANIMATION ---
+    const qs = document.querySelector.bind(document);
+    const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
+
+    const el = {
+      container: qs(".mo-container"),
+      i: qs(".lttr--I"), l: qs(".lttr--L"), o: qs(".lttr--O"), v: qs(".lttr--V"),
+      e: qs(".lttr--E"), y: qs(".lttr--Y"), o2: qs(".lttr--O2"), u: qs(".lttr--U"),
+      lineLeft: qs(".line--left"), lineRight: qs(".line--rght"),
+      colTxt: "#ff4d6d"
+    };
+
+    class Heart extends mojs.CustomShape {
+      getShape() { return '<path d="M50,88.9C25.5,78.2,0.5,54.4,3.8,31.1S41.3,1.8,50,29.9c8.7-28.2,42.8-22.2,46.2,1.2S74.5,78.2,50,88.9z"/>'; }
+      getLength() { return 200; }
+    }
+    mojs.addShape("heart", Heart);
+
+    const crtBoom = (delay = 0, x = 0, rd = 46) => {
+      const brst = new mojs.Burst({ radius: { [rd + 15]: 110 }, angle: "rand(60, 180)", count: 3, timeline: { delay }, parent: el.container, x, children: { radius: [5, 3, 7], fill: el.colTxt, scale: { 1: 0 }, duration: 400 } });
+      return [brst];
+    };
+
+    const loveTl = new mojs.Timeline().add([
+      new mojs.Tween({ duration: 1000, onStart: () => { [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(item => item.style.opacity = 1); } }),
+      new mojs.Html({ el: el.lineLeft, x: { 0: 52 }, duration: 1000, easing: 'sin.inOut' }).then({ x: 176, duration: 2000 }).then({ x: 0, duration: 500 }),
+      new mojs.Html({ el: el.lineRight, x: { 0: -52 }, duration: 1000, easing: 'sin.inOut' }).then({ x: -176, duration: 2000 }).then({ x: 0, duration: 500 }),
+      new mojs.Shape({ parent: el.container, shape: "heart", delay: 1000, fill: el.colTxt, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500 }).then({ x: -14, scale: 0.9, duration: 1500 }).then({ scale: 0, duration: 500 }),
+      ...crtBoom(1000, -64, 46)
+    ]);
+
+    loveTl.play();
+    setInterval(() => { loveTl.replay(); }, 4300);
+
+    // --- PART 2: THE INTERACTION ---
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const bearImg = document.getElementById('bearImg');
+    let yesSize = 1.2;
+
+    function moveNoButton() {
+        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+        noBtn.style.position = 'fixed';
+        noBtn.style.left = x + 'px';
+        noBtn.style.top = y + 'px';
+
+        yesSize += 0.4;
+        yesBtn.style.fontSize = yesSize + 'rem';
+        yesBtn.style.padding = (12 + yesSize * 4) + 'px ' + (25 + yesSize * 8) + 'px';
+        bearImg.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
+    }
+
+    noBtn.addEventListener('mouseover', moveNoButton);
+    noBtn.addEventListener('click', moveNoButton);
+
+    yesBtn.addEventListener('click', () => {
+        document.querySelector('.question').innerHTML = "I Love You So Much! ❤️";
+        document.querySelector('.btn-group').style.display = 'none';
+        document.querySelector('.container').style.display = 'none';
+        bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif"; 
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+    });
+  </script>
 </body>
 </html>
