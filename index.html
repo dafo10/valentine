@@ -13,15 +13,34 @@
     }
     .main-card { display: flex; flex-direction: column; align-items: center; z-index: 10; text-align: center; width: 100%; }
     
-    /* Bear Styling */
     .bear-container img { width: 160px; height: auto; margin-bottom: 10px; pointer-events: none; }
 
-    /* The "I LOVE YOU" Animation Area */
-    .container { width: 500px; height: 200px; position: relative; margin-top: -10px; }
-    .svg-container { z-index: 2; position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    .mo-container { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
-    .line { fill: none; stroke: #ff4d6d; stroke-width: 8; stroke-linecap: round; }
-    .lttr { fill: #ff4d6d; opacity: 0; }
+    /* PURE CSS ANIMATION FOR THE LETTERS */
+    .container { width: 500px; height: 150px; position: relative; display: flex; justify-content: center; align-items: center; }
+    
+    .text-svg { width: 100%; height: auto; fill: #ff4d6d; }
+    
+    /* Animation for the letters popping in */
+    .lttr {
+      opacity: 0;
+      animation: popIn 4s infinite;
+    }
+
+    @keyframes popIn {
+      0%, 10% { opacity: 0; transform: scale(0.5); }
+      20%, 80% { opacity: 1; transform: scale(1); }
+      90%, 100% { opacity: 0; transform: scale(1.1); }
+    }
+
+    /* Staggered delay for each letter to make it look smooth */
+    .lttr--I { animation-delay: 0.1s; }
+    .lttr--L { animation-delay: 0.2s; }
+    .lttr--O { animation-delay: 0.3s; }
+    .lttr--V { animation-delay: 0.4s; }
+    .lttr--E { animation-delay: 0.5s; }
+    .lttr--Y { animation-delay: 0.6s; }
+    .lttr--O2 { animation-delay: 0.7s; }
+    .lttr--U { animation-delay: 0.8s; }
 
     /* Interaction Area */
     .question { color: #fb6f92; font-size: 1.8rem; margin-top: 15px; }
@@ -33,7 +52,7 @@
     button { 
       padding: 12px 25px; font-size: 1.2rem; font-family: 'Pacifico', cursive; 
       border: none; border-radius: 50px; cursor: pointer; 
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.1s;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
     }
     #yesBtn { background-color: #ff4d6d; color: white; z-index: 100; }
     #noBtn { background-color: #ffffff; color: #ff4d6d; position: absolute; z-index: 100; left: 55%; }
@@ -47,9 +66,7 @@
     </div>
 
     <div class="container">
-      <svg class="svg-container" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 200">
-        <line class="line line--left" x1="10" y1="17" x2="10" y2="183"></line>
-        <line class="line line--rght" x1="490" y1="17" x2="490" y2="183"></line>
+      <svg class="text-svg" viewBox="0 0 500 150">
         <g>
           <path class="lttr lttr--I" d="M42.2,73.9h11.4v52.1H42.2V73.9z"></path>
           <path class="lttr lttr--L" d="M85.1,73.9h11.4v42.1h22.8v10H85.1V73.9z"></path>
@@ -61,7 +78,6 @@
           <path class="lttr lttr--U" d="M412.4,101.1V73.9h11.4v26.7c0,10.9,2.4,15.9,11.5,15.9c8.4,0,11.4-4.6,11.4-15.8V73.9h11v26.9c0,7.8-1.1,13.5-4,17.7c-3.7,5.3-10.4,8.4-18.7,8.4c-8.4,0-15.1-3.1-18.8-8.5C413.4,114.2,412.4,108.5,412.4,101.1z"></path>
         </g>
       </svg>
-      <div class="mo-container" id="js-mo-container"></div>
     </div>
 
     <h1 class="question">Will you be my Valentine?</h1>
@@ -73,48 +89,8 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
 
   <script>
-    // --- PART 1: THE FULL ORIGINAL ANIMATION ---
-    const qs = document.querySelector.bind(document);
-    const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
-
-    const el = {
-      container: qs("#js-mo-container"),
-      i: qs(".lttr--I"), l: qs(".lttr--L"), o: qs(".lttr--O"), v: qs(".lttr--V"),
-      e: qs(".lttr--E"), y: qs(".lttr--Y"), o2: qs(".lttr--O2"), u: qs(".lttr--U"),
-      lineLeft: qs(".line--left"), lineRight: qs(".line--rght"),
-      colTxt: "#ff4d6d"
-    };
-
-    class Heart extends mojs.CustomShape {
-      getShape() { return '<path d="M50,88.9C25.5,78.2,0.5,54.4,3.8,31.1S41.3,1.8,50,29.9c8.7-28.2,42.8-22.2,46.2,1.2S74.5,78.2,50,88.9z"/>'; }
-      getLength() { return 200; }
-    }
-    mojs.addShape("heart", Heart);
-
-    const crtBoom = (delay = 0, x = 0, rd = 46) => {
-      const parent = el.container;
-      const crcl = new mojs.Shape({ shape: "circle", fill: "none", stroke: el.colTxt, strokeWidth: { 5: 0 }, radius: { [rd]: [rd + 20] }, easing: "quint.out", duration: 500 / 3, parent, delay, x });
-      const brst = new mojs.Burst({ radius: { [rd + 15]: 110 }, angle: "rand(60, 180)", count: 3, timeline: { delay }, parent, x, children: { radius: [5, 3, 7], fill: el.colTxt, scale: { 1: 0 }, duration: 400 } });
-      return [crcl, brst];
-    };
-
-    const loveTl = new mojs.Timeline().add([
-      new mojs.Tween({ duration: 1000, onUpdate: (p) => { 
-        [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(item => item.style.opacity = p); 
-      }}),
-      new mojs.Html({ el: el.lineLeft, x: { 0: 52 }, duration: 1000, easing: 'sin.inOut' }).then({ x: 176, duration: 2000 }).then({ x: 0, duration: 500 }),
-      new mojs.Html({ el: el.lineRight, x: { 0: -52 }, duration: 1000, easing: 'sin.inOut' }).then({ x: -176, duration: 2000 }).then({ x: 0, duration: 500 }),
-      new mojs.Shape({ parent: el.container, shape: "heart", delay: 1000, fill: el.colTxt, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500 }).then({ x: -14, scale: 0.9, duration: 1500 }).then({ scale: 0, duration: 500 }),
-      ...crtBoom(1000, -64, 46), ...crtBoom(2000, 18, 34)
-    ]);
-
-    loveTl.play();
-    setInterval(() => { loveTl.replay(); }, 4300);
-
-    // --- PART 2: THE INTERACTION ---
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
     const bearImg = document.getElementById('bearImg');
@@ -142,7 +118,7 @@
         document.querySelector('.btn-group').style.display = 'none';
         document.querySelector('.container').style.display = 'none';
         bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif"; 
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4d6d', '#ffffff'] });
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
     });
   </script>
 </body>
