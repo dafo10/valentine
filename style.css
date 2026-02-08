@@ -61,6 +61,44 @@ body {
   right: 1rem;
   text-decoration: underline;
   cursor: default;
+  .interaction-layer {
+  position: absolute;
+  bottom: 5%;
+  text-align: center;
+  width: 100%;
+  z-index: 100;
+}
+
+.question {
+  color: #a5b9c7;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+button {
+  padding: 12px 25px;
+  font-size: 1.5rem;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: 0.1s;
+}
+
+#yesBtn {
+  background-color: #fa4843;
+  color: white;
+}
+
+#noBtn {
+  background-color: #a5b9c7;
+  color: #282a36;
+}
 }
 
 .sound--off {
