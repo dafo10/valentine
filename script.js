@@ -1,4 +1,4 @@
-// --- ORIGINAL ANIMATION LOGIC ---
+// --- SMOOTH ANIMATION ---
 const qs = document.querySelector.bind(document);
 const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
 
@@ -7,8 +7,7 @@ const el = {
   i: qs(".lttr--I"), l: qs(".lttr--L"), o: qs(".lttr--O"), v: qs(".lttr--V"),
   e: qs(".lttr--E"), y: qs(".lttr--Y"), o2: qs(".lttr--O2"), u: qs(".lttr--U"),
   lineLeft: qs(".line--left"), lineRight: qs(".line--rght"),
-  colTxt: "#ff4d6d", colHeart: "#ff4d6d",
-  blup: qs(".blup"), blop: qs(".blop")
+  colTxt: "#ff4d6d", colHeart: "#ff4d6d"
 };
 
 class Heart extends mojs.CustomShape {
@@ -28,10 +27,10 @@ const crtLoveTl = () => {
   const move = 1000; const boom = 200; const easing = "sin.inOut"; const easingBoom = "sin.in"; const easingOut = "sin.out";
   const opts = { duration: move, easing, opacity: 1 }; const delta = 150;
   return new mojs.Timeline().add([
-    new mojs.Tween({ duration: move, onStart: () => { [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(item => { item.style.opacity = 1; item.style.transform = "translate(0,0)"; }); } }),
-    new mojs.Html({ ...opts, el: el.lineLeft, x: { 0: 52 } }).then({ duration: boom + move, x: { to: 106 } }).then({ duration: boom + move, x: { to: 166 } }).then({ duration: 150, x: { to: 176 } }).then({ duration: 300 }).then({ duration: 350, x: { to: 0 }, easing: easingOut }),
-    new mojs.Html({ ...opts, el: el.lineRight, x: { 0: -52 } }).then({ duration: boom + move, x: { to: -106 } }).then({ duration: boom + move, x: { to: -166 } }).then({ duration: 150, x: { to: -176 } }).then({ duration: 300 }).then({ duration: 350, x: { to: 0 }, easing: easingOut }),
-    new mojs.Shape({ parent: el.container, shape: "heart", delay: move, fill: el.colHeart, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500 }).then({ x: { to: -62 }, scale: { to: 0.65 }, duration: boom + move - 500 }).then({ duration: boom - 50, x: { to: -14 }, scale: { to: 0.9 }, easing: easingBoom }).then({ duration: 125, scale: { to: 0.8 } }).then({ duration: 125, scale: { to: 0.85 } }).then({ duration: move - 200, scale: { to: 0.45 } }).then({ delay: -75, duration: 150, x: { to: 0 }, scale: { to: 0.9 }, easing: easingBoom }).then({ duration: 350, scale: { to: 0 }, easing: easingOut }),
+    new mojs.Tween({ duration: move, onStart: () => { [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(item => { item.style.opacity = 1; }); } }),
+    new mojs.Html({ ...opts, el: el.lineLeft, x: { 0: 52 } }).then({ duration: boom + move, x: { to: 106 } }).then({ duration: boom + move, x: { to: 166 } }).then({ duration: 150, x: { to: 176 } }).then({ duration: 350, x: { to: 0 }, easing: easingOut }),
+    new mojs.Html({ ...opts, el: el.lineRight, x: { 0: -52 } }).then({ duration: boom + move, x: { to: -106 } }).then({ duration: boom + move, x: { to: -166 } }).then({ duration: 150, x: { to: -176 } }).then({ duration: 350, x: { to: 0 }, easing: easingOut }),
+    new mojs.Shape({ parent: el.container, shape: "heart", delay: move, fill: el.colHeart, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500 }).then({ x: { to: -62 }, scale: { to: 0.65 }, duration: boom + move - 500 }).then({ duration: boom - 50, x: { to: -14 }, scale: { to: 0.9 }, easing: easingBoom }).then({ duration: 350, scale: { to: 0 }, easing: easingOut }),
     ...crtBoom(move, -64, 46), ...crtBoom(move * 2 + boom, 18, 34), ...crtBoom(move * 3 + boom * 2 - delta, -64, 34), ...crtBoom(move * 3 + boom * 2, 45, 34)
   ]);
 };
@@ -39,39 +38,37 @@ const crtLoveTl = () => {
 const loveTl = crtLoveTl().play();
 setInterval(() => { loveTl.replay(); }, 4300);
 
-// --- VIRAL INTERACTION LOGIC ---
+// --- UNLIMITED RUNAWAY LOGIC ---
 const noBtn = document.getElementById('noBtn');
 const yesBtn = document.getElementById('yesBtn');
 const bearImg = document.getElementById('bearImg');
-const questionText = document.querySelector('.question');
-let yesSize = 1.5;
+let yesSize = 1.2;
 
-noBtn.addEventListener('mouseover', () => {
-    // 1. Move the No button
+// Teleports the "No" button to random spots
+noBtn.addEventListener('mouseover', moveNoButton);
+noBtn.addEventListener('click', moveNoButton); // Extra insurance
+
+function moveNoButton() {
     const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
     const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-    noBtn.style.position = 'fixed';
+    noBtn.style.position = 'fixed'; // Ensures it follows screen
     noBtn.style.left = `${x}px`;
     noBtn.style.top = `${y}px`;
 
-    // 2. Make Yes button bigger
-    yesSize += 0.5;
+    // Make Yes button bigger (Unlimited growth)
+    yesSize += 0.3;
     yesBtn.style.fontSize = `${yesSize}rem`;
-    yesBtn.style.padding = `${10 + yesSize * 5}px ${20 + yesSize * 10}px`;
+    yesBtn.style.padding = `${10 + (yesSize * 3)}px ${20 + (yesSize * 6)}px`;
     
-    // 3. Change bear to "sad/shocked" bear while she tries to click no
-    bearImg.src = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHpueGZ3bmZueGZ3bmZueGZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZAmS8dyy5eG/K97pG4v9/giphy.gif";
-});
+    // Set Bear to shocked bear
+    bearImg.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
+}
 
 yesBtn.addEventListener('click', () => {
-    // Change UI
-    questionText.innerHTML = "I Love You So Much! ❤️";
+    document.querySelector('.question').innerHTML = "I Love You So Much! ❤️";
     document.querySelector('.btn-group').style.display = 'none';
-    
-    // Happy Hugging Bears
-    bearImg.src = "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3ZueGZ3bmZueGZ3bmZueGZ3JmVwPXYxX2ludGVybmFsX2dpZl9ieV9pZAmS8dyy5eG/148x4W9-5-18mK/giphy.gif";
+    bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif"; // Hugging bear
 
-    // Confetti
     confetti({
         particleCount: 150,
         spread: 70,
