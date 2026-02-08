@@ -402,6 +402,28 @@ const toggleSound = () => {
       el.blup.volume = volume;
       el.blop.volume = volume;
       el.sound.classList.remove("sound--off");
+      const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+
+noBtn.addEventListener('mouseover', () => {
+    const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+    const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+    
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = `${x}px`;
+    noBtn.style.top = `${y}px`;
+});
+
+yesBtn.addEventListener('click', () => {
+    document.querySelector('.question').innerHTML = "Yay! Best decision ever! ❤️";
+    document.querySelector('.btn-group').style.display = 'none';
+    
+    confetti({
+      particleCount: 150,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+});
     }
     on = !on;
   };
