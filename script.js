@@ -1,13 +1,22 @@
-// 1. Animation Logic
-const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
+const qs = document.querySelector.bind(document);
 
 const el = {
-  container: document.querySelector('#js-mo-container'),
-  letters: document.querySelectorAll('.lttr'),
-  lineLeft: document.querySelector('.line--left'),
-  lineRight: document.querySelector('.line--rght'),
-  colPink: "#ff4d6d"
+  container: qs(".mo-container"),
+  i: qs(".lttr--I"),
+  l: qs(".lttr--L"),
+  o: qs(".lttr--O"),
+  v: qs(".lttr--V"),
+  e: qs(".lttr--E"),
+  y: qs(".lttr--Y"),
+  o2: qs(".lttr--O2"),
+  u: qs(".lttr--U"),
+  lineLeft: qs(".line--left"),
+  lineRight: qs(".line--rght"),
+  colTxt: "#ff4d6d",
+  colHeart: "#fa4843"
 };
+
+const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
 
 class Heart extends mojs.CustomShape {
   getShape() { return '<path d="M50,88.9C25.5,78.2,0.5,54.4,3.8,31.1S41.3,1.8,50,29.9c8.7-28.2,42.8-22.2,46.2,1.2S74.5,78.2,50,88.9z"/>'; }
@@ -15,53 +24,53 @@ class Heart extends mojs.CustomShape {
 }
 mojs.addShape("heart", Heart);
 
-const crtBoom = (delay = 0, x = 0) => {
-  return new mojs.Burst({
-    parent: el.container, radius: { 50: 120 }, angle: "rand(0, 360)", count: 12, delay, x,
-    children: { shape: "circle", radius: 5, fill: el.colPink, scale: { 1: 0 }, duration: 600 }
+const crtBoom = (delay = 0, x = 0, rd = 46) => {
+  const brst = new mojs.Burst({
+    radius: { [rd + 15]: 110 }, angle: "rand(60, 180)", count: 3, timeline: { delay },
+    parent: el.container, x,
+    children: { radius: [5, 3, 7], fill: el.colTxt, scale: { 1: 0, easing: "quad.in" }, duration: 400 }
   });
+  return [brst];
 };
 
-const loveTl = new mojs.Timeline().add([
-  new mojs.Tween({
-    duration: 1000,
-    onUpdate: (p) => { el.letters.forEach(l => l.style.opacity = p); }
-  }),
-  new mojs.Html({ el: el.lineLeft, x: { 0: 200 }, duration: 1000, easing: 'bounce.out' }).then({ x: 0, duration: 1000 }),
-  new mojs.Html({ el: el.lineRight, x: { 0: -200 }, duration: 1000, easing: 'bounce.out' }).then({ x: 0, duration: 1000 }),
-  new mojs.Shape({
-    parent: el.container, shape: "heart", delay: 500, fill: el.colPink, scale: { 0: 1 }, duration: 1000, easing: easingHeart
-  }).then({ scale: 0, duration: 500 }),
-  crtBoom(500, -80),
-  crtBoom(1000, 80)
-]);
+const crtLoveTl = () => {
+  const move = 1000; const boom = 200; const easing = "sin.inOut"; const opts = { duration: move, easing, opacity: 1 };
+  
+  return new mojs.Timeline().add([
+    new mojs.Tween({
+      duration: move,
+      onUpdate: (p) => { [el.i, el.l, el.o, el.v, el.e, el.y, el.o2, el.u].forEach(letter => letter.style.opacity = p); }
+    }),
+    new mojs.Html({ ...opts, el: el.lineLeft, x: { 0: 52 } }).then({ duration: boom + move, x: 106 }).then({ duration: boom + move, x: 166 }).then({ duration: 350, x: 0 }),
+    new mojs.Html({ ...opts, el: el.lineRight, x: { 0: -52 } }).then({ duration: boom + move, x: -106 }).then({ duration: boom + move, x: -166 }).then({ duration: 350, x: 0 }),
+    new mojs.Shape({
+      parent: el.container, shape: "heart", delay: move, fill: el.colHeart, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500
+    }).then({ x: -14, scale: 0.9, duration: 1200 }).then({ scale: 0, duration: 500 }),
+    ...crtBoom(move, -64, 46), ...crtBoom(move * 2 + boom, 18, 34)
+  ]);
+};
 
-const runAnim = () => { loveTl.replay(); setTimeout(runAnim, 4500); };
-runAnim();
+const loveTl = crtLoveTl().play();
+setInterval(() => { loveTl.replay(); }, 4300);
 
-// 2. Interaction Logic
-const noBtn = document.getElementById('noBtn');
-const yesBtn = document.getElementById('yesBtn');
-const bear = document.getElementById('bearImg');
-let yesScale = 1;
+// Interaction
+const noBtn = qs('#noBtn');
+const yesBtn = qs('#yesBtn');
+const bearImg = qs('#bearImg');
+let scale = 1;
 
-function moveNo() {
-  const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-  const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-  noBtn.style.position = 'fixed';
-  noBtn.style.left = x + 'px';
-  noBtn.style.top = y + 'px';
-  yesScale += 0.2;
-  yesBtn.style.transform = `scale(${yesScale})`;
-  bear.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
-}
-
-noBtn.addEventListener('mouseover', moveNo);
+noBtn.addEventListener('mouseover', () => {
+    noBtn.style.position = 'fixed';
+    noBtn.style.left = Math.random() * 80 + '%';
+    noBtn.style.top = Math.random() * 80 + '%';
+    scale += 0.2;
+    yesBtn.style.transform = `scale(${scale})`;
+    bearImg.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
+});
 
 yesBtn.addEventListener('click', () => {
-  document.querySelector('.question').innerHTML = "I Love You Forever! ❤️";
-  document.querySelector('.buttons').style.display = 'none';
-  document.querySelector('.animation-stage').style.display = 'none';
-  bear.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif";
-  confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 } });
+    qs('.question').innerHTML = "I Love You Forever! ❤️";
+    qs('.btn-group').style.display = 'none';
+    bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif";
+    confetti({ particleCount: 150, spread: 70 });
 });
