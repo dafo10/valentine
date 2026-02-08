@@ -1,39 +1,40 @@
-*,
-*:before,
-*:after {
+*, *:before, *:after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html,
 body {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #282a36;
-  font-size: 62.5%;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-color: #ffe5ec; /* Soft Valentine Pink */
+  font-family: 'Pacifico', cursive;
+  overflow: hidden;
 }
 
-@media screen and (max-width: 520px) {
+.main-card {
+  text-align: center;
+  z-index: 10;
+}
 
-  html,
-  body {
-    /* don't know how to set default units to rem in mojs :(( */
-  }
+.bear-container img {
+  width: 200px;
+  margin-bottom: -20px;
 }
 
 .container {
   width: 50rem;
   height: 20rem;
   position: relative;
+  margin: 0 auto;
 }
 
 .svg-container {
   z-index: 2;
   position: absolute;
+  left: 0;
 }
 
 .mo-container {
@@ -43,64 +44,52 @@ body {
 
 .line {
   fill: none;
-  stroke: #ffffff;
+  stroke: #ff4d6d;
   stroke-width: 8;
   stroke-linecap: round;
-  stroke-miterlimit: 10;
 }
 
 .lttr {
-  fill: #a5b9c7;
+  fill: #ff4d6d;
 }
 
-.sound {
-  position: fixed;
-  color: #a5b9c7;
-  font-size: 1.6rem;
-  bottom: 1rem;
-  right: 1rem;
-  text-decoration: underline;
-  cursor: default;
-  .interaction-layer {
-  position: absolute;
-  bottom: 5%;
-  text-align: center;
-  width: 100%;
-  z-index: 100;
+.interaction-layer {
+  margin-top: 20px;
 }
 
 .question {
-  color: #a5b9c7;
+  color: #fb6f92;
   font-size: 2.5rem;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .btn-group {
   display: flex;
   justify-content: center;
-  gap: 30px;
+  align-items: center;
+  gap: 20px;
+  min-height: 150px;
 }
 
 button {
-  padding: 12px 25px;
+  padding: 15px 30px;
   font-size: 1.5rem;
+  font-family: 'Pacifico', cursive;
   border: none;
-  border-radius: 25px;
+  border-radius: 50px;
   cursor: pointer;
-  transition: 0.1s;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
 }
 
 #yesBtn {
-  background-color: #fa4843;
+  background-color: #ff4d6d;
   color: white;
+  z-index: 1000;
 }
 
 #noBtn {
-  background-color: #a5b9c7;
-  color: #282a36;
-}
-}
-
-.sound--off {
-  text-decoration: line-through;
+  background-color: #ffffff;
+  color: #ff4d6d;
+  position: relative;
 }
