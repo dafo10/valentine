@@ -17,6 +17,7 @@ noBtn.addEventListener('mouseover', () => {
 
 // Success action
 yesBtn.addEventListener('click', () => {
+    document.getElementById('mySong').play();
     document.getElementById('qText').innerHTML = "I Love You Forever! ❤️";
     document.querySelector('.btn-group').style.display = 'none';
     confetti({
