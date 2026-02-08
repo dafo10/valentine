@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>For My Girl ❤️</title>
+  <title>Valentine ❤️</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
     *, *:before, *:after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -11,27 +11,40 @@
       min-height: 100vh; display: flex; justify-content: center; align-items: center; 
       background-color: #ffe5ec; font-family: 'Pacifico', cursive; overflow: hidden; 
     }
-    .main-card { display: flex; flex-direction: column; align-items: center; z-index: 10; text-align: center; width: 100%; }
+    .main-card { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 600px; }
     
-    /* Bear Styling */
-    .bear-container { height: 150px; display: flex; align-items: flex-end; }
-    .bear-container img { width: 160px; height: auto; pointer-events: none; }
+    /* Bear */
+    .bear-container img { width: 150px; height: auto; margin-bottom: 5px; }
 
-    /* The Animation Box */
-    .container { width: 500px; height: 200px; position: relative; margin: 10px 0; }
-    .svg-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; }
-    .mo-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-    
+    /* Animation Box - LOCKED DIMENSIONS */
+    .animation-box {
+      width: 500px;
+      height: 200px;
+      position: relative;
+      background: transparent;
+    }
+    .svg-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 500px; height: 200px;
+      z-index: 5;
+    }
+    .mo-container {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
     .line { fill: none; stroke: #ff4d6d; stroke-width: 8; stroke-linecap: round; }
     .lttr { fill: #ff4d6d; opacity: 0; }
 
-    /* Buttons */
-    .question { color: #fb6f92; font-size: 1.8rem; margin-top: 10px; }
-    .btn-group { display: flex; justify-content: center; align-items: center; gap: 30px; min-height: 150px; width: 100%; position: relative; }
+    /* Interaction */
+    .question { color: #fb6f92; font-size: 1.8rem; margin: 20px 0; }
+    .btn-group { display: flex; justify-content: center; align-items: center; gap: 30px; min-height: 100px; width: 100%; position: relative; }
     
-    button { padding: 12px 25px; font-size: 1.2rem; font-family: 'Pacifico', cursive; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    #yesBtn { background-color: #ff4d6d; color: white; z-index: 1000; position: relative; }
-    #noBtn { background-color: #ffffff; color: #ff4d6d; position: absolute; z-index: 1000; left: 55%; }
+    button { padding: 12px 28px; font-size: 1.3rem; font-family: 'Pacifico', cursive; border: none; border-radius: 50px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    #yesBtn { background-color: #ff4d6d; color: white; z-index: 100; }
+    #noBtn { background-color: #ffffff; color: #ff4d6d; position: absolute; left: 55%; z-index: 100; }
   </style>
 </head>
 <body>
@@ -41,7 +54,7 @@
       <img src="https://media.tenor.com/7S8l0N9M7mUAAAAi/milk-and-mocha-bear-couple.gif" id="bearImg">
     </div>
 
-    <div class="container">
+    <div class="animation-box">
       <svg class="svg-container" viewBox="0 0 500 200">
         <line class="line line--left" x1="10" y1="17" x2="10" y2="183"></line>
         <line class="line line--rght" x1="490" y1="17" x2="490" y2="183"></line>
@@ -67,17 +80,19 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <script src="https://cdn.jsdelivr.net/mojs/latest/mo.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
     const qs = document.querySelector.bind(document);
+    
+    // 1. ANIMATION SETUP
     const easingHeart = mojs.easing.path("M0,100C2.9,86.7,33.6-7.3,46-7.3s15.2,22.7,26,22.7S89,0,100,0");
-
     const el = {
       container: qs("#js-mo-container"),
       letters: [qs(".lttr--I"), qs(".lttr--L"), qs(".lttr--O"), qs(".lttr--V"), qs(".lttr--E"), qs(".lttr--Y"), qs(".lttr--O2"), qs(".lttr--U")],
-      lineLeft: qs(".line--left"), lineRight: qs(".line--rght"),
+      lineLeft: qs(".line--left"), 
+      lineRight: qs(".line--rght"),
       colPink: "#ff4d6d"
     };
 
@@ -87,44 +102,66 @@
     }
     mojs.addShape("heart", Heart);
 
-    const crtBoom = (delay = 0, x = 0, rd = 46) => {
-      const brst = new mojs.Burst({ radius: { [rd + 15]: 110 }, angle: "rand(60, 180)", count: 3, timeline: { delay }, parent: el.container, x, children: { radius: [5, 3, 7], fill: el.colPink, scale: { 1: 0 }, duration: 400 } });
-      return [brst];
+    const crtBoom = (delay = 0, x = 0) => {
+      return new mojs.Burst({
+        parent: el.container,
+        radius: { 50: 100 },
+        angle: "rand(0, 360)",
+        count: 10,
+        delay,
+        x,
+        children: { shape: "circle", radius: 5, fill: el.colPink, scale: { 1: 0 }, duration: 500 }
+      });
     };
 
-    // THE FULL ORIGINAL TIMELINE
     const loveTl = new mojs.Timeline().add([
-      new mojs.Tween({ duration: 1000, onUpdate: (p) => { el.letters.forEach(l => l.style.opacity = p); } }),
-      new mojs.Html({ el: el.lineLeft, x: { 0: 52 }, duration: 800, easing: 'sin.inOut' }).then({ x: 176, duration: 1500 }).then({ x: 0, duration: 800 }),
-      new mojs.Html({ el: el.lineRight, x: { 0: -52 }, duration: 800, easing: 'sin.inOut' }).then({ x: -176, duration: 1500 }).then({ x: 0, duration: 800 }),
-      new mojs.Shape({ parent: el.container, shape: "heart", delay: 800, fill: el.colPink, x: -64, scale: { 0: 0.95, easing: easingHeart }, duration: 500 }).then({ x: -14, scale: 0.9, duration: 1200 }).then({ scale: 0, duration: 500 }),
-      ...crtBoom(800, -64, 46), ...crtBoom(1800, 18, 34)
+      new mojs.Tween({
+        duration: 1000,
+        onUpdate: (p) => { el.letters.forEach(l => l.style.opacity = p); }
+      }),
+      new mojs.Html({ el: el.lineLeft, x: { 0: 200 }, duration: 1000, easing: 'sin.inOut' }).then({ x: 0, duration: 1000 }),
+      new mojs.Html({ el: el.lineRight, x: { 0: -200 }, duration: 1000, easing: 'sin.inOut' }).then({ x: 0, duration: 1000 }),
+      new mojs.Shape({
+        parent: el.container, shape: "heart", delay: 500, fill: el.colPink, scale: { 0: 1 }, duration: 1000, easing: easingHeart
+      }).then({ scale: 0, duration: 500 }),
+      crtBoom(500, -50),
+      crtBoom(1000, 50)
     ]);
 
-    loveTl.play();
-    setInterval(() => { loveTl.replay(); }, 4500);
+    // Loop
+    const runAnimation = () => {
+      loveTl.replay();
+      setTimeout(runAnimation, 4500);
+    };
+    runAnimation();
 
-    // Interaction
+    // 2. BUTTONS SETUP
     const noBtn = document.getElementById('noBtn');
     const yesBtn = document.getElementById('yesBtn');
     const bearImg = document.getElementById('bearImg');
+    let yesScale = 1;
 
-    function moveNo() {
-        const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-        const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
-        noBtn.style.position = 'fixed';
-        noBtn.style.left = x + 'px';
-        noBtn.style.top = y + 'px';
-        bearImg.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
+    function escape() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.position = "fixed";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+      
+      yesScale += 0.2;
+      yesBtn.style.transform = `scale(${yesScale})`;
+      bearImg.src = "https://media.tenor.com/XGf8O27Y-KAAAAAi/milk-and-mocha-bear.gif";
     }
 
-    noBtn.addEventListener('mouseover', moveNo);
+    noBtn.addEventListener('mouseover', escape);
+    noBtn.addEventListener('click', escape);
+
     yesBtn.addEventListener('click', () => {
-        qs('.question').innerHTML = "I Love You So Much! ❤️";
-        qs('.btn-group').style.display = 'none';
-        qs('.container').style.display = 'none';
-        bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif"; 
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      qs('.question').innerHTML = "I Knew You'd Say Yes! ❤️";
+      qs('.btn-group').style.display = "none";
+      qs('.animation-box').style.display = "none";
+      bearImg.src = "https://media.tenor.com/Z-7u8mO0GvUAAAAi/milk-and-mocha.gif";
+      confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
     });
   </script>
 </body>
