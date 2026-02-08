@@ -9,31 +9,35 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #ffe5ec; /* Soft Valentine Pink */
+  background-color: #ffe5ec;
   font-family: 'Pacifico', cursive;
-  overflow: hidden;
+  overflow: hidden; /* Stops "No" button from making page scroll */
 }
 
 .main-card {
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   z-index: 10;
 }
 
 .bear-container img {
-  width: 200px;
-  margin-bottom: -20px;
+  width: 180px;
+  height: auto;
+  pointer-events: none; /* Stops her from dragging the bear image */
 }
 
 .container {
-  width: 50rem;
-  height: 20rem;
+  width: 500px;
+  height: 200px;
   position: relative;
-  margin: 0 auto;
+  margin: 10px 0;
 }
 
 .svg-container {
   z-index: 2;
   position: absolute;
+  top: 0;
   left: 0;
 }
 
@@ -51,6 +55,7 @@ body {
 
 .lttr {
   fill: #ff4d6d;
+  transition: opacity 0.3s; /* Makes fading smoother */
 }
 
 .interaction-layer {
@@ -59,8 +64,8 @@ body {
 
 .question {
   color: #fb6f92;
-  font-size: 2.5rem;
-  margin-bottom: 30px;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
 .btn-group {
@@ -68,28 +73,28 @@ body {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  min-height: 150px;
+  min-height: 100px;
 }
 
 button {
-  padding: 15px 30px;
-  font-size: 1.5rem;
+  padding: 12px 25px;
+  font-size: 1.2rem;
   font-family: 'Pacifico', cursive;
   border: none;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: font-size 0.2s, padding 0.2s;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 #yesBtn {
   background-color: #ff4d6d;
   color: white;
-  z-index: 1000;
+  z-index: 999;
 }
 
 #noBtn {
   background-color: #ffffff;
   color: #ff4d6d;
-  position: relative;
+  position: absolute; /* Reset to relative if you want it to start in group */
 }
