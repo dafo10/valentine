@@ -17,8 +17,9 @@ noBtn.addEventListener('mouseover', () => {
 
 // Success action
 yesBtn.addEventListener('click', () => {
+    document.querySelector('.photo-frame').style.display = 'flex'; // Shows the photo
     document.getElementById('mySong').play();
-    document.getElementById('qText').innerHTML = "I Love You Forever! ❤️";
+    document.getElementById('qText').innerHTML = "ANK ARIYENNU,LOVE SO MUCH! ❤️";
     document.querySelector('.btn-group').style.display = 'none';
     confetti({
         particleCount: 150,
